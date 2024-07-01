@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up the database & read in products
         databaseHelper = new ProductDatabaseHelper(this);
+        boolean reloadDB = false; // Set this to true to cause the DB to be re-populated
+        if (reloadDB)
+            this.deleteDatabase("products_database");
         products = databaseHelper.getAllProducts();
         if (products.isEmpty()) {
             databaseHelper.populateProductsDatabase();

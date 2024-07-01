@@ -8,7 +8,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -86,21 +91,32 @@ public class SecondActivity extends AppCompatActivity {
                 sb.append("Thanks & Cheers!");
 
                 // Email the selected products
-                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
                 emailIntent.setDataAndType(Uri.parse("mailto:"), "text/plain");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"braxton.r.evans@gmail.com"});
-                //TODO: Change the destination email address to the one below:
-                //emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"sweng888mobileapps@gmail.com"});
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"sweng888mobileapps@gmail.com"});
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Sweng888 Shared Products");
                 emailIntent.putExtra(Intent.EXTRA_TEXT, sb.toString());
 
-                if (emailIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(emailIntent);
-                    Toast.makeText(view.getContext(), "Email sent!", Toast.LENGTH_LONG).show();
-                } else {
-                    // Handle the case where no email app is available
-                    Toast.makeText(view.getContext(), "No app found to send email", Toast.LENGTH_LONG).show();
-                }
+                ActivityResultLauncher<Intent> launcher = new ActivityResultLauncher<Intent>() {
+                    @Override
+                    public void launch(Intent intent, @Nullable ActivityOptionsCompat activityOptionsCompat) {
+                        Intent shareIntent = Intent.createChooser(intent, null);
+                        startActivity(shareIntent);
+                    }
+
+                    @Override
+                    public void unregister() {
+
+                    }
+
+                    @NonNull
+                    @Override
+                    public ActivityResultContract<Intent, ?> getContract() {
+                        return null;
+                    }
+                };
+                launcher.launch(emailIntent);
+                Toast.makeText(view.getContext(), "Email sent!", Toast.LENGTH_LONG).show();
             }
         });
     }

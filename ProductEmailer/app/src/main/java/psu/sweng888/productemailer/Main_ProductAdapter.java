@@ -28,7 +28,8 @@ public class Main_ProductAdapter extends RecyclerView.Adapter<Main_ProductAdapte
         holder.nameTextView.setText(product.getName());
         holder.descrTextView.setText(product.getDescription());
         holder.sellerTextView.setText(product.getSeller());
-        holder.priceDollarsTextView.setText(product.getPrice_Dollars());
+        String priceStr = "$" + product.getPrice_Dollars();
+        holder.priceDollarsTextView.setText(priceStr);
         holder.priceCentsTextView.setText(product.getPrice_Cents());
         holder.picImageView.setImageResource(product.getResourceID());
         holder.selectedCheckbox.setSelected(product.isSelected());

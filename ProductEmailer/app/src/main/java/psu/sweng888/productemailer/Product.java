@@ -6,11 +6,11 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 public class Product implements Parcelable {
-    private String name;
-    private String description;
-    private String seller;
-    private double price;
-    private int resourceID;
+    private final String name;
+    private final String description;
+    private final String seller;
+    private final double price;
+    private final int resourceID;
 
     private boolean isSelected = false;
 

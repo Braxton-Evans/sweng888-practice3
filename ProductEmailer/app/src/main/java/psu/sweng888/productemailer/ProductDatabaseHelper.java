@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ProductDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "products_database";
@@ -32,7 +33,7 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
                 KEY_DESCRIPTION + " TEXT, " +
                 KEY_SELLER + " TEXT, " +
                 KEY_PRICE + " REAL, " +
-                KEY_PICTURE + " TEXT" +
+                KEY_PICTURE + " INTEGER" +
                 ")";
         db.execSQL(createTableQuery);
     }
@@ -45,63 +46,22 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
     public void populateProductsDatabase() {
         SQLiteDatabase db = getWritableDatabase();
 
-        ContentValues values;
+        // Product Definitions
+        Random random = new Random();
+        String[] productNames = {"Yomega Dash Yo-Yo", "Wireless Headphones", "Smartwatch", "Portable Bluetooth Speaker", "Tablet", "E-reader", "Fitness Tracker", "Action Camera"};
+        String[] descriptions = {"Long-spinning YoYo perfect for non-binding tricks!", "Great sound quality and long battery life.", "Stay connected on the go.", "Perfect for parties and outdoor gatherings.", "Enjoy movies and games on a larger screen.", "Read your favorite books anywhere.", "Track your steps and heart rate.", "Capture your adventures in stunning detail."};
+        String[] sellerNames = {"Yomega", "Tech Gadgets Inc.", "Smart Devices Co.", "Audio World", "Mobile Solutions", "Bookworm Emporium", "FitLife Gear", "Adventure Capture"};
+        Integer[] picResIDs = {R.drawable.yomega_dash, R.drawable.headphones, R.drawable.smartwatch, R.drawable.bluetooth_speaker, R.drawable.tablet, R.drawable.e_reader, R.drawable.fitness_tracker, R.drawable.camera};
 
-        values = new ContentValues();
-        values.put(KEY_NAME, "Product 1");
-        values.put(KEY_DESCRIPTION, "Description 1");
-        values.put(KEY_SELLER, "Seller 1");
-        values.put(KEY_PRICE, 11.11);
-        values.put(KEY_PICTURE, R.drawable.yomega_dash);
-        db.insert(TABLE_PRODUCTS, null, values);
-
-        values = new ContentValues();
-        values.put(KEY_NAME, "Product 2");
-        values.put(KEY_DESCRIPTION, "Description 2");
-        values.put(KEY_SELLER, "Seller 2");
-        values.put(KEY_PRICE, 22.22);
-        values.put(KEY_PICTURE, R.drawable.yomega_dash);
-        db.insert(TABLE_PRODUCTS, null, values);
-
-        values = new ContentValues();
-        values.put(KEY_NAME, "Product 3");
-        values.put(KEY_DESCRIPTION, "Description 3");
-        values.put(KEY_SELLER, "Seller 3");
-        values.put(KEY_PRICE, 33.33);
-        values.put(KEY_PICTURE, R.drawable.yomega_dash);
-        db.insert(TABLE_PRODUCTS, null, values);
-
-        values = new ContentValues();
-        values.put(KEY_NAME, "Product 4");
-        values.put(KEY_DESCRIPTION, "Description 4");
-        values.put(KEY_SELLER, "Seller 4");
-        values.put(KEY_PRICE, 44.44);
-        values.put(KEY_PICTURE, R.drawable.yomega_dash);
-        db.insert(TABLE_PRODUCTS, null, values);
-
-        values = new ContentValues();
-        values.put(KEY_NAME, "Product 5");
-        values.put(KEY_DESCRIPTION, "Description 5");
-        values.put(KEY_SELLER, "Seller 5");
-        values.put(KEY_PRICE, 55.55);
-        values.put(KEY_PICTURE, R.drawable.yomega_dash);
-        db.insert(TABLE_PRODUCTS, null, values);
-
-        values = new ContentValues();
-        values.put(KEY_NAME, "Product 6");
-        values.put(KEY_DESCRIPTION, "Description 6");
-        values.put(KEY_SELLER, "Seller 6");
-        values.put(KEY_PRICE, 66.66);
-        values.put(KEY_PICTURE, R.drawable.yomega_dash);
-        db.insert(TABLE_PRODUCTS, null, values);
-
-        values = new ContentValues();
-        values.put(KEY_NAME, "Product 7");
-        values.put(KEY_DESCRIPTION, "Description 7");
-        values.put(KEY_SELLER, "Seller 7");
-        values.put(KEY_PRICE, 77.77);
-        values.put(KEY_PICTURE, R.drawable.yomega_dash);
-        db.insert(TABLE_PRODUCTS, null, values);
+        for (int i = 0; i < productNames.length; ++i) {
+            ContentValues values = new ContentValues();
+            values.put(KEY_NAME, productNames[i]);
+            values.put(KEY_DESCRIPTION, descriptions[i]);
+            values.put(KEY_SELLER, sellerNames[i]);
+            values.put(KEY_PRICE, 10 + random.nextDouble() * 125); // Price between $10 and $250
+            values.put(KEY_PICTURE, picResIDs[i]);
+            db.insert(TABLE_PRODUCTS, null, values);
+        }
 
         db.close();
     }
